@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Check, ChevronRight } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ChevronRight } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { PipelineResults } from "@/components/PipelineResults";
+import { DatasetStep } from "./PipelineSteps";
 
-const steps = [
+export const steps = [
   "Dataset Selection",
   "Preprocessing Methods",
   "Language Model",
@@ -24,43 +17,20 @@ const steps = [
   "Processing",
 ];
 
-const preprocessingMethods = [
-  "Text Cleaning",
-  "Tokenization",
-  "Stop Words Removal",
-  "Lemmatization",
-  "Stemming",
-];
-
-const metrics = [
-  "Accuracy",
-  "Precision",
-  "Recall",
-  "F1-Score",
-  "ROC Curve",
-];
-
-const visualTypes = [
-  "Line Chart",
-  "Bar Chart",
-  "Confusion Matrix",
-  "ROC Curve Plot",
-];
-
-const datasets = [
-  "IMDB Reviews",
-  "Amazon Product Reviews",
-  "Twitter Sentiment",
-];
-
 export function Pipeline() {
   const [currentStep, setCurrentStep] = useState(0);
   const [dataset, setDataset] = useState("");
+  const [importedDataset, setImportedDataset] = useState<File | null>(null);
   const [selectedPreprocessing, setSelectedPreprocessing] = useState<string[]>([]);
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([]);
   const [selectedVisuals, setSelectedVisuals] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleDatasetImport = (file: File) => {
+    setImportedDataset(file);
+    setDataset(file.name);
+  };
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -96,21 +66,19 @@ export function Pipeline() {
     switch (currentStep) {
       case 0:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Select Dataset</h2>
-            <Select onValueChange={setDataset}>
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a dataset" />
-              </SelectTrigger>
-              <SelectContent>
-                {datasets.map((d) => (
-                  <SelectItem key={d} value={d}>
-                    {d}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <DatasetStep
+            dataset={dataset}
+            setDataset={setDataset}
+            selectedPreprocessing={selectedPreprocessing}
+            setSelectedPreprocessing={setSelectedPreprocessing}
+            selectedMetrics={selectedMetrics}
+            setSelectedMetrics={setSelectedMetrics}
+            selectedVisuals={selectedVisuals}
+            setSelectedVisuals={setSelectedVisuals}
+            startPipeline={startPipeline}
+            importedDataset={importedDataset}
+            onDatasetImport={handleDatasetImport}
+          />
         );
       case 1:
         return (
