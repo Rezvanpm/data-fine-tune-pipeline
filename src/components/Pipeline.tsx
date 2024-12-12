@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
+import { PipelineResults } from "@/components/PipelineResults";
 
 const steps = [
   "Dataset Selection",
@@ -237,9 +238,19 @@ export function Pipeline() {
       case 7:
         return (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Processing Pipeline</h2>
-            <Progress value={progress} className="w-full" />
-            <p className="text-center">{progress}% Complete</p>
+            {progress < 100 ? (
+              <>
+                <h2 className="text-xl font-semibold">Processing Pipeline</h2>
+                <Progress value={progress} className="w-full" />
+                <p className="text-center">{progress}% Complete</p>
+              </>
+            ) : (
+              <PipelineResults
+                dataset={dataset}
+                metrics={selectedMetrics}
+                visualTypes={selectedVisuals}
+              />
+            )}
           </div>
         );
       default:
