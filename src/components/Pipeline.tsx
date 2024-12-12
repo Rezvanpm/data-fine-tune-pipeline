@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { PipelineResults } from "@/components/PipelineResults";
-import { DatasetStep } from "./PipelineSteps";
+import { DatasetStep, PreprocessingStep, ModelStep, TrainingMethodStep, MetricsStep, VisualizationStep, ReviewStep } from "./PipelineSteps";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { preprocessingMethods, metrics, visualTypes } from "./PipelineSteps";
 
 export const steps = [
   "Dataset Selection",
@@ -82,126 +85,41 @@ export function Pipeline() {
         );
       case 1:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Select Preprocessing Methods</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {preprocessingMethods.map((method) => (
-                <div key={method} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={method}
-                    checked={selectedPreprocessing.includes(method)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedPreprocessing([...selectedPreprocessing, method]);
-                      } else {
-                        setSelectedPreprocessing(
-                          selectedPreprocessing.filter((m) => m !== method)
-                        );
-                      }
-                    }}
-                  />
-                  <label htmlFor={method}>{method}</label>
-                </div>
-              ))}
-            </div>
-          </div>
+          <PreprocessingStep
+            selectedPreprocessing={selectedPreprocessing}
+            setSelectedPreprocessing={setSelectedPreprocessing}
+          />
         );
       case 2:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Language Model</h2>
-            <Select disabled value="phi-3.5">
-              <SelectTrigger>
-                <SelectValue placeholder="Phi-3.5" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="phi-3.5">Phi-3.5</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <ModelStep />
         );
       case 3:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Training Method</h2>
-            <Select disabled value="fine-tuning">
-              <SelectTrigger>
-                <SelectValue placeholder="Fine-tuning" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fine-tuning">Fine-tuning</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <TrainingMethodStep />
         );
       case 4:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Select Metrics</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {metrics.map((metric) => (
-                <div key={metric} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={metric}
-                    checked={selectedMetrics.includes(metric)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedMetrics([...selectedMetrics, metric]);
-                      } else {
-                        setSelectedMetrics(
-                          selectedMetrics.filter((m) => m !== metric)
-                        );
-                      }
-                    }}
-                  />
-                  <label htmlFor={metric}>{metric}</label>
-                </div>
-              ))}
-            </div>
-          </div>
+          <MetricsStep
+            selectedMetrics={selectedMetrics}
+            setSelectedMetrics={setSelectedMetrics}
+          />
         );
       case 5:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Select Visualization Types</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {visualTypes.map((type) => (
-                <div key={type} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={type}
-                    checked={selectedVisuals.includes(type)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedVisuals([...selectedVisuals, type]);
-                      } else {
-                        setSelectedVisuals(
-                          selectedVisuals.filter((t) => t !== type)
-                        );
-                      }
-                    }}
-                  />
-                  <label htmlFor={type}>{type}</label>
-                </div>
-              ))}
-            </div>
-          </div>
+          <VisualizationStep
+            selectedVisuals={selectedVisuals}
+            setSelectedVisuals={setSelectedVisuals}
+          />
         );
       case 6:
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Review & Start</h2>
-            <div className="space-y-2">
-              <p><strong>Dataset:</strong> {dataset}</p>
-              <p><strong>Preprocessing:</strong> {selectedPreprocessing.join(", ")}</p>
-              <p><strong>Model:</strong> Phi-3.5</p>
-              <p><strong>Method:</strong> Fine-tuning</p>
-              <p><strong>Metrics:</strong> {selectedMetrics.join(", ")}</p>
-              <p><strong>Visualizations:</strong> {selectedVisuals.join(", ")}</p>
-            </div>
-            <Button onClick={startPipeline} className="w-full">
-              Start Pipeline
-            </Button>
-          </div>
+          <ReviewStep
+            dataset={dataset}
+            selectedPreprocessing={selectedPreprocessing}
+            selectedMetrics={selectedMetrics}
+            selectedVisuals={selectedVisuals}
+          />
         );
       case 7:
         return (
