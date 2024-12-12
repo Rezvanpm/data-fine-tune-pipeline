@@ -69,12 +69,7 @@ interface StepProps {
   onDatasetImport?: (file: File) => void;
 }
 
-export function DatasetStep({ 
-  dataset, 
-  setDataset, 
-  importedDataset, 
-  onDatasetImport 
-}: StepProps) {
+export function DatasetStep({ dataset, setDataset, importedDataset, onDatasetImport }: StepProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Select Dataset</h2>
@@ -137,7 +132,7 @@ export function PreprocessingStep({ selectedPreprocessing, setSelectedPreprocess
   );
 }
 
-export function ModelStep() {
+export function ModelStep({}: StepProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Language Model</h2>
@@ -153,7 +148,7 @@ export function ModelStep() {
   );
 }
 
-export function TrainingMethodStep() {
+export function TrainingMethodStep({}: StepProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Training Method</h2>
