@@ -4,10 +4,15 @@ import { Progress } from "@/components/ui/progress";
 import { Check, ChevronRight } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { PipelineResults } from "@/components/PipelineResults";
-import { DatasetStep, PreprocessingStep, ModelStep, TrainingMethodStep, MetricsStep, VisualizationStep, ReviewStep } from "./PipelineSteps";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { preprocessingMethods, metrics, visualTypes } from "./PipelineSteps";
+import { 
+  DatasetStep, 
+  PreprocessingStep, 
+  ModelStep, 
+  TrainingMethodStep, 
+  MetricsStep, 
+  VisualizationStep, 
+  ReviewStep 
+} from "./PipelineSteps";
 
 export const steps = [
   "Dataset Selection",
@@ -65,62 +70,36 @@ export function Pipeline() {
     }, 100);
   };
 
+  const commonProps = {
+    dataset,
+    setDataset,
+    selectedPreprocessing,
+    setSelectedPreprocessing,
+    selectedMetrics,
+    setSelectedMetrics,
+    selectedVisuals,
+    setSelectedVisuals,
+    startPipeline,
+    importedDataset,
+    onDatasetImport: handleDatasetImport,
+  };
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
-        return (
-          <DatasetStep
-            dataset={dataset}
-            setDataset={setDataset}
-            selectedPreprocessing={selectedPreprocessing}
-            setSelectedPreprocessing={setSelectedPreprocessing}
-            selectedMetrics={selectedMetrics}
-            setSelectedMetrics={setSelectedMetrics}
-            selectedVisuals={selectedVisuals}
-            setSelectedVisuals={setSelectedVisuals}
-            startPipeline={startPipeline}
-            importedDataset={importedDataset}
-            onDatasetImport={handleDatasetImport}
-          />
-        );
+        return <DatasetStep {...commonProps} />;
       case 1:
-        return (
-          <PreprocessingStep
-            selectedPreprocessing={selectedPreprocessing}
-            setSelectedPreprocessing={setSelectedPreprocessing}
-          />
-        );
+        return <PreprocessingStep {...commonProps} />;
       case 2:
-        return (
-          <ModelStep />
-        );
+        return <ModelStep {...commonProps} />;
       case 3:
-        return (
-          <TrainingMethodStep />
-        );
+        return <TrainingMethodStep {...commonProps} />;
       case 4:
-        return (
-          <MetricsStep
-            selectedMetrics={selectedMetrics}
-            setSelectedMetrics={setSelectedMetrics}
-          />
-        );
+        return <MetricsStep {...commonProps} />;
       case 5:
-        return (
-          <VisualizationStep
-            selectedVisuals={selectedVisuals}
-            setSelectedVisuals={setSelectedVisuals}
-          />
-        );
+        return <VisualizationStep {...commonProps} />;
       case 6:
-        return (
-          <ReviewStep
-            dataset={dataset}
-            selectedPreprocessing={selectedPreprocessing}
-            selectedMetrics={selectedMetrics}
-            selectedVisuals={selectedVisuals}
-          />
-        );
+        return <ReviewStep {...commonProps} />;
       case 7:
         return (
           <div className="space-y-4">

@@ -9,7 +9,8 @@ export const datasets = [
     description: "A dataset of 50,000 movie reviews for sentiment analysis",
     size: "80MB",
     format: "CSV",
-    columns: ["review_text", "sentiment"]
+    columns: ["review_text", "sentiment"],
+    path: "/datasets/imdb_reviews.csv"
   },
   {
     id: "amazon",
@@ -17,7 +18,8 @@ export const datasets = [
     description: "Product reviews from Amazon's e-commerce platform",
     size: "120MB",
     format: "CSV",
-    columns: ["product_id", "review_text", "rating", "helpful_votes"]
+    columns: ["product_id", "review_text", "rating", "helpful_votes"],
+    path: "/datasets/amazon_reviews.csv"
   },
   {
     id: "twitter",
@@ -25,7 +27,8 @@ export const datasets = [
     description: "Tweets labeled with sentiment for classification",
     size: "50MB",
     format: "CSV",
-    columns: ["tweet_text", "sentiment", "timestamp"]
+    columns: ["tweet_text", "sentiment", "timestamp"],
+    path: "/datasets/twitter_sentiment.csv"
   }
 ];
 
@@ -61,16 +64,21 @@ interface StepProps {
   setSelectedMetrics: (value: string[]) => void;
   selectedVisuals: string[];
   setSelectedVisuals: (value: string[]) => void;
-  startPipeline: () => void;
-  importedDataset: File | null;
-  onDatasetImport: (file: File) => void;
+  startPipeline?: () => void;
+  importedDataset?: File | null;
+  onDatasetImport?: (file: File) => void;
 }
 
-export function DatasetStep({ dataset, setDataset, importedDataset, onDatasetImport }: StepProps) {
+export function DatasetStep({ 
+  dataset, 
+  setDataset, 
+  importedDataset, 
+  onDatasetImport 
+}: StepProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Select Dataset</h2>
-      <Select onValueChange={setDataset}>
+      <Select onValueChange={setDataset} value={dataset}>
         <SelectTrigger>
           <SelectValue placeholder="Choose a dataset" />
         </SelectTrigger>
