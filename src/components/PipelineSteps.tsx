@@ -3,9 +3,30 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DatasetImport } from "./DatasetImport";
 
 export const datasets = [
-  "IMDB Reviews",
-  "Amazon Product Reviews",
-  "Twitter Sentiment",
+  {
+    id: "imdb",
+    name: "IMDB Reviews",
+    description: "A dataset of 50,000 movie reviews for sentiment analysis",
+    size: "80MB",
+    format: "CSV",
+    columns: ["review_text", "sentiment"]
+  },
+  {
+    id: "amazon",
+    name: "Amazon Product Reviews",
+    description: "Product reviews from Amazon's e-commerce platform",
+    size: "120MB",
+    format: "CSV",
+    columns: ["product_id", "review_text", "rating", "helpful_votes"]
+  },
+  {
+    id: "twitter",
+    name: "Twitter Sentiment",
+    description: "Tweets labeled with sentiment for classification",
+    size: "50MB",
+    format: "CSV",
+    columns: ["tweet_text", "sentiment", "timestamp"]
+  }
 ];
 
 export const preprocessingMethods = [
@@ -55,8 +76,14 @@ export function DatasetStep({ dataset, setDataset, importedDataset, onDatasetImp
         </SelectTrigger>
         <SelectContent>
           {datasets.map((d) => (
-            <SelectItem key={d} value={d}>
-              {d}
+            <SelectItem key={d.id} value={d.name}>
+              <div className="space-y-1">
+                <div className="font-medium">{d.name}</div>
+                <div className="text-sm text-gray-500">{d.description}</div>
+                <div className="text-xs text-gray-400">
+                  Size: {d.size} | Format: {d.format}
+                </div>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
