@@ -14,6 +14,21 @@ import {
   ReviewStep 
 } from "./PipelineSteps";
 
+// Define the common props interface
+interface StepProps {
+  dataset: string;
+  setDataset: (value: string) => void;
+  selectedPreprocessing: string[];
+  setSelectedPreprocessing: (value: string[]) => void;
+  selectedMetrics: string[];
+  setSelectedMetrics: (value: string[]) => void;
+  selectedVisuals: string[];
+  setSelectedVisuals: (value: string[]) => void;
+  startPipeline: () => void;
+  importedDataset: File | null;
+  onDatasetImport: (file: File) => void;
+}
+
 export const steps = [
   "Dataset Selection",
   "Preprocessing Methods",
@@ -70,7 +85,7 @@ export function Pipeline() {
     }, 100);
   };
 
-  const commonProps = {
+  const commonProps: StepProps = {
     dataset,
     setDataset,
     selectedPreprocessing,
